@@ -1,0 +1,25 @@
+Sub LoadFromMSSQL()
+    Dim conn As Object
+    Dim rs As Object
+    Dim sConn As String
+    Dim sSQL As String
+
+    ' 연결 문자열 (SQL Server 인증 예시)
+    sConn = "Provider=SQLOLEDB;Data Source=서버명;Initial Catalog=DB명;User ID=사용자명;Password=비번;"
+
+    ' 쿼리 작성
+    sSQL = "SELECT 제품코드, 제품명, 기본단가 FROM 제품정보"
+
+    ' 객체 생성
+    Set conn = CreateObject("ADODB.Connection")
+    Set rs = CreateObject("ADODB.Recordset")
+
+    conn.Open sConn
+    rs.Open sSQL, conn
+
+    ' 결과를 엑셀에 붙이기 (예: A2부터)
+    Sheet1.Range("A2").CopyFromRecordset rs
+
+    rs.Close: conn.Close
+    Set rs = Nothing: Set conn = Nothing
+End Sub
